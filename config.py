@@ -71,49 +71,58 @@ DEV_CONFIG = {
     "simulation_delay": 2  # segundos para simular processamento
 }
 
-
-
-
-# Configurações de links para cada IA
+# Configurações de links para cada IA (LISTA ATUALIZADA)
 AI_LINKS = {
     "text_generator": [
         {"name": "ChatGPT", "url": "https://chat.openai.com/"},
         {"name": "Google Gemini", "url": "https://gemini.google.com/"},
+        {"name": "Perplexity AI", "url": "https://www.perplexity.ai/"}, # NOVO
+        {"name": "Claude", "url": "https://claude.ai/"}, # NOVO
         {"name": "Copy.ai", "url": "https://www.copy.ai/"}
     ],
     "image_creator": [
         {"name": "Midjourney", "url": "https://www.midjourney.com/"},
         {"name": "DALL-E 3", "url": "https://openai.com/dall-e-3"},
+        {"name": "Leonardo.Ai", "url": "https://leonardo.ai/"}, # NOVO
+        {"name": "Adobe Firefly", "url": "https://www.adobe.com/br/products/firefly.html"}, # NOVO
         {"name": "Stable Diffusion", "url": "https://stability.ai/stable-diffusion"}
     ],
     "code_assistant": [
         {"name": "GitHub Copilot", "url": "https://github.com/features/copilot"},
         {"name": "Codeium", "url": "https://www.codeium.com/"},
+        {"name": "Amazon CodeWhisperer", "url": "https://aws.amazon.com/codewhisperer/"}, # NOVO
         {"name": "Tabnine", "url": "https://www.tabnine.com/"}
     ],
     "data_analyst": [
         {"name": "Tableau", "url": "https://www.tableau.com/"},
         {"name": "Power BI", "url": "https://powerbi.microsoft.com/"},
-        {"name": "Google Data Studio", "url": "https://lookerstudio.google.com/"}
+        {"name": "Google Looker Studio", "url": "https://lookerstudio.google.com/"}
     ],
     "translator": [
         {"name": "Google Translate", "url": "https://translate.google.com/"},
-        {"name": "DeepL Translator", "url": "https://www.deepl.com/translator"}
+        {"name": "DeepL Translator", "url": "https://www.deepl.com/translator"},
+        {"name": "Microsoft Translator", "url": "https://www.bing.com/translator"} # NOVO
     ],
     "voice_synthesis": [
         {"name": "ElevenLabs", "url": "https://elevenlabs.io/"},
+        {"name": "PlayHT", "url": "https://play.ht/"}, # NOVO
         {"name": "Google Text-to-Speech", "url": "https://cloud.google.com/text-to-speech"}
     ],
     "document_processor": [
+        {"name": "NotebookLM", "url": "https://notebooklm.google.com/"}, # NOVO
+        {"name": "ChatPDF", "url": "https://www.chatpdf.com/"}, # NOVO
         {"name": "Adobe Acrobat AI", "url": "https://www.adobe.com/acrobat/acrobat-ai-assistant.html"},
         {"name": "DocuSign", "url": "https://www.docusign.com/"}
     ],
     "chatbot_builder": [
         {"name": "ManyChat", "url": "https://manychat.com/"},
+        {"name": "Google Dialogflow", "url": "https://cloud.google.com/dialogflow"}, # NOVO
         {"name": "Chatfuel", "url": "https://chatfuel.com/"}
     ],
     "video_editor": [
         {"name": "RunwayML", "url": "https://runwayml.com/"},
+        {"name": "Pika", "url": "https://pika.art/"}, # NOVO
+        {"name": "Synthesia", "url": "https://www.synthesia.io/"}, # NOVO
         {"name": "Descript", "url": "https://www.descript.com/"}
     ]
 }
