@@ -76,21 +76,26 @@ AI_LINKS = {
     "text_generator": [
         {"name": "ChatGPT", "url": "https://chat.openai.com/"},
         {"name": "Google Gemini", "url": "https://gemini.google.com/"},
-        {"name": "Perplexity AI", "url": "https://www.perplexity.ai/"}, # NOVO
-        {"name": "Claude", "url": "https://claude.ai/"}, # NOVO
+        {"name": "Google AI Studio", "url": "https://aistudio.google.com/"}, # NOVO
+        {"name": "Perplexity AI", "url": "https://www.perplexity.ai/"},
+        {"name": "Claude", "url": "https://claude.ai/"},
+        {"name": "DeepSeek", "url": "https://chat.deepseek.com/"},
+        {"name": "Qwen (Alibaba)", "url": "https://tongyi.aliyun.com/qianwen/"},
         {"name": "Copy.ai", "url": "https://www.copy.ai/"}
     ],
     "image_creator": [
         {"name": "Midjourney", "url": "https://www.midjourney.com/"},
         {"name": "DALL-E 3", "url": "https://openai.com/dall-e-3"},
-        {"name": "Leonardo.Ai", "url": "https://leonardo.ai/"}, # NOVO
-        {"name": "Adobe Firefly", "url": "https://www.adobe.com/br/products/firefly.html"}, # NOVO
+        {"name": "Leonardo.Ai", "url": "https://leonardo.ai/"},
+        {"name": "Adobe Firefly", "url": "https://www.adobe.com/br/products/firefly.html"},
         {"name": "Stable Diffusion", "url": "https://stability.ai/stable-diffusion"}
     ],
     "code_assistant": [
         {"name": "GitHub Copilot", "url": "https://github.com/features/copilot"},
+        {"name": "Google AI Studio", "url": "https://aistudio.google.com/"}, # NOVO
         {"name": "Codeium", "url": "https://www.codeium.com/"},
-        {"name": "Amazon CodeWhisperer", "url": "https://aws.amazon.com/codewhisperer/"}, # NOVO
+        {"name": "DeepSeek Coder", "url": "https://chat.deepseek.com/"},
+        {"name": "Amazon CodeWhisperer", "url": "https://aws.amazon.com/codewhisperer/"},
         {"name": "Tabnine", "url": "https://www.tabnine.com/"}
     ],
     "data_analyst": [
@@ -101,28 +106,28 @@ AI_LINKS = {
     "translator": [
         {"name": "Google Translate", "url": "https://translate.google.com/"},
         {"name": "DeepL Translator", "url": "https://www.deepl.com/translator"},
-        {"name": "Microsoft Translator", "url": "https://www.bing.com/translator"} # NOVO
+        {"name": "Microsoft Translator", "url": "https://www.bing.com/translator"}
     ],
     "voice_synthesis": [
         {"name": "ElevenLabs", "url": "https://elevenlabs.io/"},
-        {"name": "PlayHT", "url": "https://play.ht/"}, # NOVO
+        {"name": "PlayHT", "url": "https://play.ht/"},
         {"name": "Google Text-to-Speech", "url": "https://cloud.google.com/text-to-speech"}
     ],
     "document_processor": [
-        {"name": "NotebookLM", "url": "https://notebooklm.google.com/"}, # NOVO
-        {"name": "ChatPDF", "url": "https://www.chatpdf.com/"}, # NOVO
+        {"name": "NotebookLM", "url": "https://notebooklm.google.com/"},
+        {"name": "ChatPDF", "url": "https://www.chatpdf.com/"},
         {"name": "Adobe Acrobat AI", "url": "https://www.adobe.com/acrobat/acrobat-ai-assistant.html"},
         {"name": "DocuSign", "url": "https://www.docusign.com/"}
     ],
     "chatbot_builder": [
         {"name": "ManyChat", "url": "https://manychat.com/"},
-        {"name": "Google Dialogflow", "url": "https://cloud.google.com/dialogflow"}, # NOVO
+        {"name": "Google Dialogflow", "url": "https://cloud.google.com/dialogflow"},
         {"name": "Chatfuel", "url": "https://chatfuel.com/"}
     ],
     "video_editor": [
         {"name": "RunwayML", "url": "https://runwayml.com/"},
-        {"name": "Pika", "url": "https://pika.art/"}, # NOVO
-        {"name": "Synthesia", "url": "https://www.synthesia.io/"}, # NOVO
+        {"name": "Pika", "url": "https://pika.art/"},
+        {"name": "Synthesia", "url": "https://www.synthesia.io/"},
         {"name": "Descript", "url": "https://www.descript.com/"}
     ]
 }
