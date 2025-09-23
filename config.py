@@ -75,25 +75,6 @@ DEV_CONFIG = {
 
 
 # Configurações de links para cada IA
-# config.py
-
-# ... (outras configurações como APP_CONFIG, VISUAL_CONFIG, etc. permanecem as mesmas) ...
-
-# Configurações das IAs (ATUALIZADO)
-AI_CATEGORIES = {
-    "Criação": ["text_generator", "manus_ai", "qwen_3", "baidu_ernie", "zai_glm"],
-    "Visual": ["image_creator", "video_editor", "omnihuman_1", "kling_ai", "seedream_4"],
-    "Desenvolvimento": ["code_assistant", "deepseek_v3"],
-    "Análise": ["data_analyst"],
-    "Comunicação": ["translator"],
-    "Áudio": ["voice_synthesis"],
-    "Produtividade": ["document_processor"],
-    "Automação": ["chatbot_builder"]
-}
-
-# ... (INTERFACE_CONFIG e DEV_CONFIG permanecem as mesmas) ...
-
-# Configurações de links para cada IA (ATUALIZADO)
 AI_LINKS = {
     "text_generator": [
         {"name": "ChatGPT", "url": "https://chat.openai.com/"},
@@ -134,30 +115,5 @@ AI_LINKS = {
     "video_editor": [
         {"name": "RunwayML", "url": "https://runwayml.com/"},
         {"name": "Descript", "url": "https://www.descript.com/"}
-    ],
-    # --- NOVAS FERRAMENTAS ADICIONADAS AQUI ---
-    "omnihuman_1": [
-        {"name": "Acessar OMNIHUMAN-1", "url": "https://omnihuman-1.com"}
-    ],
-    "manus_ai": [
-        {"name": "Acessar MANUS AI", "url": "https://manus.im"}
-    ],
-    "qwen_3": [
-        {"name": "Acessar QWEN 3", "url": "https://chat.qwen.ai"}
-    ],
-    "kling_ai": [
-        {"name": "Acessar KLING AI 2.1", "url": "https://klingai.com"}
-    ],
-    "baidu_ernie": [
-        {"name": "Acessar BAIDU ERNIE 4.5", "url": "https://huggingface.co/baidu/ERNIE-4.5-0.3B-PT"}
-    ],
-    "zai_glm": [
-        {"name": "Acessar Z.AI GLM-4.5", "url": "https://z.ai"}
-    ],
-    "deepseek_v3": [
-        {"name": "Acessar DEEPSEEK V3.1", "url": "https://chat.deepseek.com"}
-    ],
-    "seedream_4": [
-        {"name": "Acessar SEEDREAM 4.0", "url": "https://seed.bytedance.com/en/seedream4_0"}
     ]
 }
