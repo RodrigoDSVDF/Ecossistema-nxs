@@ -2,7 +2,7 @@ import streamlit as st
 import time
 from datetime import datetime
 
-# --- CONFIGURAÇÃO DA PÁGINA (Deve ser o primeiro comando) ---
+# --- CONFIGURAÇÃO DA PÁGINA (Obrigatório ser a primeira linha) ---
 st.set_page_config(
     page_title="Nexus - Ecossistema de IAs",
     page_icon="🌐",
@@ -72,23 +72,20 @@ AI_TOOLS = {
     "translator": {"icon": "🌍", "title": "Tradução", "description": "Adaptação cultural e linguística.", "status": "Online", "category": "Global"}
 }
 
-# --- CSS FUTURISTA (DARK EMERALD THEME) ---
+# --- CSS CUSTOMIZADO (NEXUS THEME) ---
 def load_css():
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
     
-    /* Configuração Geral */
     .stApp {
         background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f23 100%);
         color: #e0e0e0;
     }
     
-    /* Tipografia */
     h1, h2, h3, .ai-title { font-family: 'Orbitron', sans-serif !important; letter-spacing: 1px; }
     p, div, span, a { font-family: 'Rajdhani', sans-serif !important; }
     
-    /* Cabeçalho */
     .main-header {
         text-align: center;
         padding: 3rem 0 1rem 0;
@@ -102,20 +99,13 @@ def load_css():
         text-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
     }
     
-    @keyframes shine {
-        to { background-position: 200% center; }
-    }
+    @keyframes shine { to { background-position: 200% center; } }
     
     .subtitle {
-        text-align: center;
-        font-size: 1.2rem;
-        color: #64748b;
-        letter-spacing: 3px;
-        margin-bottom: 3rem;
-        text-transform: uppercase;
+        text-align: center; font-size: 1.2rem; color: #64748b;
+        letter-spacing: 3px; margin-bottom: 3rem; text-transform: uppercase;
     }
     
-    /* Grid System - A Chave para o Layout */
     .ecosystem-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -125,7 +115,6 @@ def load_css():
         margin: 0 auto;
     }
     
-    /* Cards das IAs */
     .ai-card {
         background: rgba(30, 30, 50, 0.4);
         backdrop-filter: blur(10px);
@@ -138,141 +127,69 @@ def load_css():
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.3s ease;
         cursor: pointer;
         position: relative;
         overflow: hidden;
     }
     
-    /* Efeito de Hover Avançado */
-    .ai-card::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; height: 2px;
-        background: linear-gradient(90deg, #00d4ff, #00ff88);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.4s ease;
-    }
-    
     .ai-card:hover {
         transform: translateY(-5px);
         background: rgba(40, 40, 70, 0.6);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
-                    0 0 20px rgba(0, 255, 136, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 136, 0.1);
+        border-color: rgba(0, 255, 136, 0.3);
     }
     
-    .ai-card:hover::before {
-        transform: scaleX(1);
-    }
+    .ai-icon { font-size: 2.5rem; margin-bottom: 1rem; filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.4)); }
+    .ai-title { font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; }
+    .ai-description { color: #94a3b8; font-size: 1rem; line-height: 1.4; }
     
-    .ai-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.4));
-    }
-    
-    .ai-title {
-        font-size: 1.4rem;
-        color: #fff;
-        margin-bottom: 0.5rem;
-    }
-    
-    .ai-description {
-        color: #94a3b8;
-        font-size: 1rem;
-        line-height: 1.4;
-    }
-    
-    /* Status Badge */
     .ai-status-wrapper {
-        margin-top: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        margin-top: 1rem; display: flex; align-items: center; justify-content: space-between;
     }
     
     .status-pill {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.8rem;
-        color: #00ff88;
-        background: rgba(0, 255, 136, 0.05);
-        padding: 4px 10px;
-        border-radius: 12px;
-        border: 1px solid rgba(0, 255, 136, 0.1);
+        display: flex; align-items: center; gap: 6px; font-size: 0.8rem;
+        color: #00ff88; background: rgba(0, 255, 136, 0.05);
+        padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(0, 255, 136, 0.1);
     }
     
     .pulse-dot {
-        width: 6px;
-        height: 6px;
-        background: #00ff88;
-        border-radius: 50%;
-        box-shadow: 0 0 8px #00ff88;
-        animation: pulse 2s infinite;
+        width: 6px; height: 6px; background: #00ff88; border-radius: 50%;
+        box-shadow: 0 0 8px #00ff88; animation: pulse 2s infinite;
     }
     
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.4; }
-        100% { opacity: 1; }
-    }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     
-    /* Link Page Styles */
-    .links-wrapper {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 2rem;
-    }
+    .links-wrapper { max-width: 900px; margin: 0 auto; padding: 2rem; }
     
     .link-card {
         background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-        border-left: 3px solid #00d4ff;
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin-bottom: 1.2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.2s ease;
+        border-left: 3px solid #00d4ff; border-radius: 8px; padding: 1.5rem;
+        margin-bottom: 1.2rem; display: flex; justify-content: space-between;
+        align-items: center; transition: all 0.2s ease;
     }
     
     .link-card:hover {
         background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
-        transform: translateX(5px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        transform: translateX(5px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
     
     .visit-btn {
-        background: transparent;
-        border: 1px solid #00ff88;
-        color: #00ff88 !important;
-        padding: 8px 20px;
-        border-radius: 4px;
-        text-decoration: none;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        letter-spacing: 1px;
-        transition: all 0.3s;
+        background: transparent; border: 1px solid #00ff88; color: #00ff88 !important;
+        padding: 8px 20px; border-radius: 4px; text-decoration: none;
+        font-weight: 600; text-transform: uppercase; font-size: 0.8rem;
+        letter-spacing: 1px; transition: all 0.3s;
     }
     
     .visit-btn:hover {
-        background: #00ff88;
-        color: #000 !important;
+        background: #00ff88; color: #000 !important;
         box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
     }
     
-    /* Particles */
     .particle {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: #00d4ff;
-        border-radius: 50%;
-        animation: float 15s infinite linear;
-        opacity: 0.3;
+        position: absolute; width: 2px; height: 2px; background: #00d4ff;
+        border-radius: 50%; animation: float 15s infinite linear; opacity: 0.3;
     }
     
     @keyframes float {
@@ -281,15 +198,8 @@ def load_css():
         100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
     }
     
-    /* Ajustes botão voltar */
-    .stButton button {
-        border-color: #333;
-        color: #aaa;
-    }
-    .stButton button:hover {
-        border-color: #00d4ff;
-        color: #00d4ff;
-    }
+    .stButton button { border-color: #333; color: #aaa; background-color: transparent; }
+    .stButton button:hover { border-color: #00d4ff; color: #00d4ff; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -298,60 +208,30 @@ def create_particles():
     for i in range(30):
         left = (i * 3.5) % 100
         delay = i * 0.4
-        size = "2px" if i % 2 == 0 else "3px"
-        particles_html += f'<div class="particle" style="left:{left}%; width:{size}; height:{size}; animation-delay:{delay}s;"></div>'
+        particles_html += f'<div class="particle" style="left:{left}%; animation-delay:{delay}s;"></div>'
     particles_html += '</div>'
     st.markdown(particles_html, unsafe_allow_html=True)
 
 def show_main_page():
-    # Header
+    # Header e Stats
     st.markdown("<h1 class='main-header'>NEXUS</h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Ecossistema Centralizado de Inteligência</p>", unsafe_allow_html=True)
     
-    # Stats Bar
     st.markdown("""
     <div style="display: flex; justify-content: center; gap: 4rem; margin-bottom: 3rem; flex-wrap: wrap;">
-        <div style="text-align: center;">
-            <div style="font-family: Orbitron; font-size: 1.8rem; color: #00ff88; font-weight: bold;">100%</div>
-            <div style="color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Operacional</div>
-        </div>
-        <div style="text-align: center;">
-            <div style="font-family: Orbitron; font-size: 1.8rem; color: #00d4ff; font-weight: bold;">20+</div>
-            <div style="color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Ferramentas</div>
-        </div>
-        <div style="text-align: center;">
-            <div style="font-family: Orbitron; font-size: 1.8rem; color: #fff; font-weight: bold;">PRO</div>
-            <div style="color: #666; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Acesso</div>
-        </div>
+        <div style="text-align: center;"><div style="font-family: Orbitron; font-size: 1.8rem; color: #00ff88; font-weight: bold;">100%</div><div style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Operacional</div></div>
+        <div style="text-align: center;"><div style="font-family: Orbitron; font-size: 1.8rem; color: #00d4ff; font-weight: bold;">20+</div><div style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Ferramentas</div></div>
+        <div style="text-align: center;"><div style="font-family: Orbitron; font-size: 1.8rem; color: #fff; font-weight: bold;">PRO</div><div style="color: #666; font-size: 0.9rem; text-transform: uppercase;">Acesso</div></div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Construção do HTML do Grid (Concatenado em uma única string para evitar erro de renderização)
+    # --- CRIAÇÃO DO GRID (CORRIGIDA: REMOVIDA INDENTAÇÃO E ESPAÇOS) ---
     grid_html = "<div class='ecosystem-container'>"
-    
     for key, tool in AI_TOOLS.items():
-        grid_html += f"""
-        <a href='?ai={key}' target='_self' style='text-decoration: none; color: inherit; z-index: 1;'>
-            <div class='ai-card'>
-                <div>
-                    <div class='ai-icon'>{tool['icon']}</div>
-                    <div class='ai-title'>{tool['title']}</div>
-                    <div class='ai-description'>{tool['description']}</div>
-                </div>
-                <div class='ai-status-wrapper'>
-                    <div class='status-pill'>
-                        <div class='pulse-dot'></div>
-                        {tool['status']}
-                    </div>
-                    <span style='color: #444; font-size: 0.8rem;'>➔</span>
-                </div>
-            </div>
-        </a>
-        """
-    
+        # Usando f-string contínua para evitar blocos de código markdown indesejados
+        grid_html += f"<a href='?ai={key}' target='_self' style='text-decoration: none; color: inherit; z-index: 1;'><div class='ai-card'><div><div class='ai-icon'>{tool['icon']}</div><div class='ai-title'>{tool['title']}</div><div class='ai-description'>{tool['description']}</div></div><div class='ai-status-wrapper'><div class='status-pill'><div class='pulse-dot'></div>{tool['status']}</div><span style='color: #444; font-size: 0.8rem;'>➔</span></div></div></a>"
     grid_html += "</div>"
     
-    # Renderiza o grid inteiro de uma vez
     st.markdown(grid_html, unsafe_allow_html=True)
 
 def show_ai_links_page(ai_key):
@@ -360,29 +240,20 @@ def show_ai_links_page(ai_key):
         st.error("Módulo não encontrado no servidor Nexus.")
         return
 
-    # Header da sub-página
     st.markdown(f"""
     <div style='text-align: center; padding: 3rem 0; animation: fadeIn 0.5s ease;'>
         <div style='font-size: 4rem; margin-bottom: 1rem;'>{ai_tool['icon']}</div>
-        <h1 style='font-family:Orbitron; font-size: 2.5rem; color: white; margin-bottom: 0.5rem;'>
-            {ai_tool['title']}
-        </h1>
-        <p style='color: #00d4ff; font-family: Rajdhani; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase;'>
-            /// Categoria: {ai_tool['category']}
-        </p>
+        <h1 style='font-family:Orbitron; font-size: 2.5rem; color: white; margin-bottom: 0.5rem;'>{ai_tool['title']}</h1>
+        <p style='color: #00d4ff; font-family: Rajdhani; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase;'>/// Categoria: {ai_tool['category']}</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # Lista de Links
     if ai_key in AI_LINKS:
         st.markdown("<div class='links-wrapper'>", unsafe_allow_html=True)
         for link in AI_LINKS[ai_key]:
             st.markdown(f"""
             <div class='link-card'>
-                <div>
-                    <h4 style='color: #fff; margin: 0; font-family: Orbitron; font-size: 1.1rem;'>{link['name']}</h4>
-                    <p style='color: #889; margin: 5px 0 0 0; font-size: 0.95rem;'>{link['desc']}</p>
-                </div>
+                <div><h4 style='color: #fff; margin: 0; font-family: Orbitron; font-size: 1.1rem;'>{link['name']}</h4><p style='color: #889; margin: 5px 0 0 0; font-size: 0.95rem;'>{link['desc']}</p></div>
                 <a href='{link['url']}' target='_blank' class='visit-btn'>Acessar</a>
             </div>
             """, unsafe_allow_html=True)
@@ -390,7 +261,6 @@ def show_ai_links_page(ai_key):
     else:
         st.info("Nenhuma ferramenta vinculada a este módulo ainda.")
 
-    # Botão Voltar Centralizado
     st.markdown("<br>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 0.4, 1])
     with col2:
@@ -401,8 +271,6 @@ def show_ai_links_page(ai_key):
 def main():
     load_css()
     create_particles()
-    
-    # Gerenciamento de Rotas
     params = st.query_params
     ai_key = params.get("ai")
     
