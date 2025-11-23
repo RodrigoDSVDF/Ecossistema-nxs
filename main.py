@@ -1,11 +1,68 @@
 import streamlit as st
 import time
 from datetime import datetime
-import base64
-# Removida a importação de AI_INTERFACES, pois não é utilizada no código fornecido.
-from config import AI_LINKS
 
-# Configuração da página
+# --- DADOS E LINKS DO ECOSSISTEMA (Atualizado com Ferramentas de Mercado) ---
+AI_LINKS = {
+    "text_generator": [
+        {"name": "Claude 3.5 Sonnet (Anthropic)", "url": "https://claude.ai", "desc": "Melhor para nuance e codificação"},
+        {"name": "ChatGPT-4o (OpenAI)", "url": "https://chat.openai.com", "desc": "O padrão da indústria, multimodal"},
+        {"name": "Gemini Advanced (Google)", "url": "https://gemini.google.com", "desc": "Integração nativa com ecossistema Google"},
+        {"name": "Jasper AI", "url": "https://www.jasper.ai", "desc": "Focado em marketing e copywriting"}
+    ],
+    "image_creator": [
+        {"name": "Midjourney", "url": "https://www.midjourney.com", "desc": "Qualidade artística superior"},
+        {"name": "DALL-E 3", "url": "https://openai.com/dall-e-3", "desc": "Fácil uso via ChatGPT"},
+        {"name": "Leonardo.ai", "url": "https://leonardo.ai", "desc": "Ótimo para assets de jogos e controle"},
+        {"name": "Ideogram", "url": "https://ideogram.ai", "desc": "Excelente para tipografia em imagens"}
+    ],
+    "code_assistant": [
+        {"name": "GitHub Copilot", "url": "https://github.com/features/copilot", "desc": "Autocomplete inteligente na IDE"},
+        {"name": "Cursor", "url": "https://cursor.sh", "desc": "IDE focada em IA (Fork do VS Code)"},
+        {"name": "Replit Ghostwriter", "url": "https://replit.com", "desc": "Codificação colaborativa na nuvem"},
+        {"name": "V0.dev (Vercel)", "url": "https://v0.dev", "desc": "Geração de UI/Frontend React"}
+    ],
+    "data_analyst": [
+        {"name": "Julius AI", "url": "https://julius.ai", "desc": "Análise de dados conversacional"},
+        {"name": "PandasAI", "url": "https://github.com/gventuri/pandas-ai", "desc": "Biblioteca Python para IA em Dataframes"},
+        {"name": "Tableau AI", "url": "https://www.tableau.com", "desc": "Analytics visual empresarial"}
+    ],
+    "translator": [
+        {"name": "DeepL", "url": "https://www.deepl.com", "desc": "Tradução mais natural do mercado"},
+        {"name": "Google Translate", "url": "https://translate.google.com", "desc": "Versatilidade e quantidade de idiomas"}
+    ],
+    "voice_synthesis": [
+        {"name": "ElevenLabs", "url": "https://elevenlabs.io", "desc": "Vozes ultra-realistas e clonagem"},
+        {"name": "Murf.ai", "url": "https://murf.ai", "desc": "Estúdio de voz profissional"}
+    ],
+    "document_processor": [
+        {"name": "ChatPDF", "url": "https://www.chatpdf.com", "desc": "Converse com seus PDFs"},
+        {"name": "Humata", "url": "https://www.humata.ai", "desc": "Análise técnica de documentos longos"}
+    ],
+    "video_editor": [
+        {"name": "Runway Gen-2", "url": "https://runwayml.com", "desc": "Geração e edição de vídeo generativa"},
+        {"name": "HeyGen", "url": "https://www.heygen.com", "desc": "Avatares falantes para apresentações"},
+        {"name": "Pika Labs", "url": "https://pika.art", "desc": "Animação de vídeo criativa"}
+    ],
+    "research_search": [ # Nova Categoria Adicionada
+        {"name": "Perplexity AI", "url": "https://www.perplexity.ai", "desc": "Pesquisa em tempo real com fontes"},
+        {"name": "Consensus", "url": "https://consensus.app", "desc": "Pesquisa científica baseada em papers"}
+    ]
+}
+
+AI_TOOLS = {
+    "text_generator": {"icon": "✍️", "title": "Gerador de Texto", "description": "IA avançada para criação de conteúdo, artigos e copy.", "status": "Online", "category": "Criação"},
+    "image_creator": {"icon": "🎨", "title": "Criador de Imagens", "description": "Gere visuais artísticos e realistas via prompt.", "status": "Online", "category": "Visual"},
+    "code_assistant": {"icon": "💻", "title": "Assistente de Código", "description": "Auxílio para dev, debugging e arquitetura.", "status": "Online", "category": "Dev"},
+    "data_analyst": {"icon": "📊", "title": "Analista de Dados", "description": "Insights automatizados e visualização de dados.", "status": "Online", "category": "Análise"},
+    "research_search": {"icon": "🔍", "title": "Pesquisa & Busca", "description": "Motores de busca baseados em LLMs e ciência.", "status": "Online", "category": "Pesquisa"},
+    "translator": {"icon": "🌍", "title": "Tradutor Neural", "description": "Tradução contextual de alta precisão.", "status": "Online", "category": "Comunicação"},
+    "voice_synthesis": {"icon": "🎤", "title": "Síntese de Voz", "description": "Text-to-Speech ultra realista.", "status": "Online", "category": "Áudio"},
+    "document_processor": {"icon": "📄", "title": "Docs & PDF", "description": "Extração e chat com documentos.", "status": "Online", "category": "Produtividade"},
+    "video_editor": {"icon": "🎬", "title": "Vídeo IA", "description": "Geração e edição generativa de vídeos.", "status": "Beta", "category": "Visual"}
+}
+
+# --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(
     page_title="Nexus - Ecossistema de IAs",
     page_icon="🌐",
@@ -13,479 +70,301 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# CSS customizado para criar o visual futurista do ecossistema
+# --- CSS FUTURISTA (DARK EMERALD THEME) ---
 def load_css():
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
     
+    /* Base Theme */
     .stApp {
-        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-        color: #ffffff;
+        background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f23 100%);
+        color: #e0e0e0;
     }
     
+    /* Typography */
+    h1, h2, h3 { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+    p, div, span, a { font-family: 'Rajdhani', sans-serif; }
+    
+    /* Nexus Header */
     .main-header {
         text-align: center;
-        padding: 2rem 0;
-        background: linear-gradient(45deg, #00d4ff, #00ff88);
+        padding: 3rem 0 1rem 0;
+        background: linear-gradient(90deg, #00d4ff, #00ff88, #00d4ff);
+        background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-family: 'Orbitron', monospace;
+        animation: shine 5s linear infinite;
         font-weight: 900;
-        font-size: 3.5rem;
-        text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-        margin-bottom: 1rem;
+        font-size: 4.5rem;
+        text-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+    }
+    
+    @keyframes shine {
+        to { background-position: 200% center; }
     }
     
     .subtitle {
         text-align: center;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1.2rem;
-        color: #a0a0a0;
-        margin-bottom: 3rem;
+        font-size: 1.3rem;
+        color: #64748b;
+        letter-spacing: 4px;
+        margin-bottom: 4rem;
+        text-transform: uppercase;
     }
     
+    /* Grid Layout */
     .ecosystem-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 2rem;
-        padding: 2rem;
-        max-width: 1400px;
+        padding: 1rem 4rem;
+        max-width: 1600px;
         margin: 0 auto;
     }
     
+    /* Glassmorphism Cards */
     .ai-card {
-        background: linear-gradient(145deg, #1e1e3f, #2a2a5a);
-        border-radius: 20px;
+        background: rgba(30, 30, 50, 0.4);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
         padding: 2rem;
-        border: 2px solid transparent;
-        background-clip: padding-box;
         position: relative;
         overflow: hidden;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     
-    .ai-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, #00d4ff, #00ff88, #ff6b6b, #ffd93d);
-        border-radius: 20px;
-        padding: 2px;
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask-composite: exclude;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .ai-card:hover::before {
-        opacity: 1;
-    }
-    
+    /* Hover Effects */
     .ai-card:hover {
-        transform: translateY(-10px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        transform: translateY(-8px) scale(1.02);
+        background: rgba(30, 30, 60, 0.6);
+        border-color: rgba(0, 255, 136, 0.3);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                    0 0 30px rgba(0, 255, 136, 0.1);
     }
     
     .ai-icon {
-        font-size: 3rem;
-        text-align: center;
-        margin-bottom: 1rem;
-        background: linear-gradient(45deg, #00d4ff, #00ff88);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
     }
     
     .ai-title {
-        font-family: 'Orbitron', monospace;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: 700;
-        text-align: center;
-        margin-bottom: 1rem;
-        color: #ffffff;
+        color: #fff;
+        margin-bottom: 0.8rem;
     }
     
     .ai-description {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1rem;
-        text-align: center;
-        color: #b0b0b0;
-        line-height: 1.6;
+        color: #94a3b8;
+        font-size: 1.05rem;
+        line-height: 1.5;
         margin-bottom: 1.5rem;
     }
     
-    .ai-status {
-        display: flex;
+    /* Status Badge */
+    .ai-status-badge {
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 0.9rem;
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        border-radius: 20px;
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
         color: #00ff88;
+        width: fit-content;
     }
     
     .status-dot {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
         background: #00ff88;
+        margin-right: 8px;
+        box-shadow: 0 0 10px #00ff88;
         animation: pulse 2s infinite;
     }
     
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
+    /* Link Page Styles */
+    .links-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
     }
     
-    .floating-particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
+    .link-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
     }
     
+    .link-card:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: #00d4ff;
+        transform: translateX(5px);
+    }
+    
+    .link-info h4 { margin: 0; color: #fff; font-size: 1.2rem; }
+    .link-info p { margin: 5px 0 0 0; color: #94a3b8; font-size: 0.9rem; }
+    
+    .visit-btn {
+        background: linear-gradient(45deg, #00d4ff, #0055ff);
+        color: white !important;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .visit-btn:hover { box-shadow: 0 0 15px rgba(0, 212, 255, 0.5); }
+    
+    /* Particles */
     .particle {
         position: absolute;
-        width: 2px;
-        height: 2px;
-        background: #00d4ff;
+        width: 3px;
+        height: 3px;
+        background: rgba(0, 212, 255, 0.5);
         border-radius: 50%;
-        animation: float 6s infinite linear;
+        animation: float-up 10s infinite linear;
     }
     
-    @keyframes float {
-        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    @keyframes float-up {
+        0% { transform: translateY(100vh) scale(0); opacity: 0; }
+        50% { opacity: 0.8; }
+        100% { transform: translateY(-10vh) scale(1); opacity: 0; }
     }
     
-    .stats-container {
-        display: flex;
-        justify-content: center;
-        gap: 3rem;
-        margin: 3rem 0;
-        flex-wrap: wrap;
-    }
-    
-    .stat-item {
-        text-align: center;
-        font-family: 'Rajdhani', sans-serif;
-    }
-    
-    .stat-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(45deg, #00d4ff, #00ff88);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .stat-label {
-        font-size: 1rem;
-        color: #a0a0a0;
-        margin-top: 0.5rem;
-    }
-    
-    .connection-lines {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-    }
-    
+    /* Custom Button Overrides */
     .stButton > button {
-        background: linear-gradient(45deg, #00d4ff, #00ff88);
-        color: #000;
-        border: none;
-        border-radius: 25px;
-        padding: 0.75rem 2rem;
-        font-family: 'Orbitron', monospace;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        background: transparent;
+        border: 1px solid #00d4ff;
+        color: #00d4ff;
+        border-radius: 8px;
+        transition: all 0.3s;
     }
-    
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
-    }
-    
-    .links-container {
-        background: linear-gradient(145deg, #1e1e3f, #2a2a5a);
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin-top: 2rem;
-        border: 1px solid #3a3a6a;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    }
-    
-    .links-container h4 {
-        color: #00d4ff;
-        font-family: 'Orbitron', monospace;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
-    
-    .link-item {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        margin-bottom: 0.5rem;
-        background-color: #2a2a5a;
-        border-radius: 10px;
-        transition: background-color 0.2s ease;
-    }
-    
-    .link-item:hover {
-        background-color: #3a3a6a;
-    }
-    
-    .link-item a {
-        color: #00ff88;
-        text-decoration: none;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1.1rem;
-        flex-grow: 1;
-    }
-    
-    .link-item .icon {
-        margin-right: 0.75rem;
-        color: #00d4ff;
-        font-size: 1.2rem;
+        background: rgba(0, 212, 255, 0.1);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Função para criar partículas flutuantes
 def create_particles():
-    particles_html = """
-    <div class="floating-particles">
-    """
-    for i in range(20):
-        delay = i * 0.3
-        left = (i * 5) % 100
-        particles_html += f"""
-        <div class="particle" style="left: {left}%; animation-delay: {delay}s;"></div>
-        """
-    particles_html += "</div>"
+    particles_html = '<div style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1;">'
+    for i in range(25):
+        left = (i * 4) % 100
+        delay = i * 0.5
+        particles_html += f'<div class="particle" style="left:{left}%; animation-delay:{delay}s;"></div>'
+    particles_html += '</div>'
     st.markdown(particles_html, unsafe_allow_html=True)
 
-# Dados das IAs disponíveis no ecossistema
-AI_TOOLS = {
-    "text_generator": {
-        "icon": "✍️",
-        "title": "Gerador de Texto",
-        "description": "IA avançada para criação de conteúdo, artigos, e-mails e textos criativos com qualidade profissional.",
-        "status": "Online",
-        "category": "Criação"
-    },
-    "image_creator": {
-        "icon": "🎨",
-        "title": "Criador de Imagens",
-        "description": "Gere imagens incríveis a partir de descrições textuais usando modelos de IA de última geração.",
-        "status": "Online",
-        "category": "Visual"
-    },
-    "code_assistant": {
-        "icon": "💻",
-        "title": "Assistente de Código",
-        "description": "Auxílio inteligente para programação, debugging e otimização de código em múltiplas linguagens.",
-        "status": "Online",
-        "category": "Desenvolvimento"
-    },
-    "data_analyst": {
-        "icon": "📊",
-        "title": "Analista de Dados",
-        "description": "Análise avançada de dados, criação de gráficos e insights automatizados para tomada de decisão.",
-        "status": "Online",
-        "category": "Análise"
-    },
-    "translator": {
-        "icon": "🌍",
-        "title": "Tradutor Universal",
-        "description": "Tradução precisa e contextual entre mais de 100 idiomas com preservação de nuances.",
-        "status": "Online",
-        "category": "Comunicação"
-    },
-    "voice_synthesis": {
-        "icon": "🎤",
-        "title": "Síntese de Voz",
-        "description": "Converta texto em áudio natural com vozes realistas e controle de entonação.",
-        "status": "Online",
-        "category": "Áudio"
-    },
-    "document_processor": {
-        "icon": "📄",
-        "title": "Processador de Documentos",
-        "description": "Extraia, analise e processe informações de documentos PDF, Word e outros formatos.",
-        "status": "Online",
-        "category": "Produtividade"
-    },
-    "chatbot_builder": {
-        "icon": "🤖",
-        "title": "Construtor de Chatbots",
-        "description": "Crie chatbots inteligentes personalizados para atendimento e automação de processos.",
-        "status": "Online",
-        "category": "Automação"
-    },
-    "video_editor": {
-        "icon": "🎬",
-        "title": "Editor de Vídeo IA",
-        "description": "Edição automática de vídeos com cortes inteligentes, legendas e efeitos visuais.",
-        "status": "Beta",
-        "category": "Visual"
-    }
-}
-
-# A função show_login_page() foi removida pois não é mais necessária.
-
 def show_main_page():
-    """Mostra a página principal do ecossistema"""
-    # Header principal
+    # Header Principal
     st.markdown("<h1 class='main-header'>NEXUS</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='subtitle'>Ecossistema Inteligente de IAs para Produtividade</p>", unsafe_allow_html=True)
+    st.markdown("<p class='subtitle'>Ecossistema de Inteligência Artificial</p>", unsafe_allow_html=True)
     
-    # Estatísticas do ecossistema
-    col1, col2, col3, col4 = st.columns(4)
+    # KPIs Rápidos
+    col1, col2, col3 = st.columns(3)
+    with col1: st.markdown("<div style='text-align:center; color:#00ff88; font-size:2rem; font-weight:bold;'>9+</div><div style='text-align:center; color:#666;'>Categorias</div>", unsafe_allow_html=True)
+    with col2: st.markdown("<div style='text-align:center; color:#00d4ff; font-size:2rem; font-weight:bold;'>PRO</div><div style='text-align:center; color:#666;'>Nível de Acesso</div>", unsafe_allow_html=True)
+    with col3: st.markdown("<div style='text-align:center; color:#fff; font-size:2rem; font-weight:bold;'>v2.0</div><div style='text-align:center; color:#666;'>System Core</div>", unsafe_allow_html=True)
     
-    with col1:
-        st.markdown("""
-        <div class='stat-item'>
-            <div class='stat-number'>9</div>
-            <div class='stat-label'>IAs Ativas</div>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown("<br><br>", unsafe_allow_html=True)
     
-    with col2:
-        st.markdown("""
-        <div class='stat-item'>
-            <div class='stat-number'>24/7</div>
-            <div class='stat-label'>Disponibilidade</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class='stat-item'>
-            <div class='stat-number'>∞</div>
-            <div class='stat-label'>Possibilidades</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col4:
-        st.markdown("""
-        <div class='stat-item'>
-            <div class='stat-number'>100%</div>
-            <div class='stat-label'>Segurança</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Container do ecossistema
+    # Grid de Apps
     st.markdown("<div class='ecosystem-container'>", unsafe_allow_html=True)
     
-    # Criar cards das IAs em grid
-    cols = st.columns(3)
+    cols = st.columns(3) # Layout apenas para controle de fluxo do Streamlit
     
-    for idx, (key, ai_tool) in enumerate(AI_TOOLS.items()):
-        col_idx = idx % 3
-        
-        with cols[col_idx]:
-            # Card da IA como um link
-            card_html = f"""
-            <a href='?ai={key}' target='_self' style='text-decoration: none;'>
-                <div class='ai-card'>
-                    <div class='ai-icon'>{ai_tool['icon']}</div>
-                    <div class='ai-title'>{ai_tool['title']}</div>
-                    <div class='ai-description'>{ai_tool['description']}</div>
-                    <div class='ai-status'>
-                        <div class='status-dot'></div>
-                        {ai_tool['status']}
-                    </div>
+    # Iterando e criando o Grid Manualmente via HTML para controle total do CSS
+    html_grid = ""
+    for key, tool in AI_TOOLS.items():
+        html_grid += f"""
+        <a href='?ai={key}' target='_self' style='text-decoration: none; color: inherit;'>
+            <div class='ai-card'>
+                <div>
+                    <div class='ai-icon'>{tool['icon']}</div>
+                    <div class='ai-title'>{tool['title']}</div>
+                    <div class='ai-description'>{tool['description']}</div>
                 </div>
-            </a>
-            """
-            st.markdown(card_html, unsafe_allow_html=True)
+                <div class='ai-status-badge'>
+                    <div class='status-dot'></div>
+                    {tool['status']}
+                </div>
+            </div>
+        </a>
+        """
     
-    st.markdown("</div>", unsafe_allow_html=True)
+    # Renderizando o grid CSS customizado
+    st.markdown(f"<div class='ecosystem-container'>{html_grid}</div>", unsafe_allow_html=True)
 
 def show_ai_links_page(ai_key):
-    """Mostra apenas a seção de links relacionados para a IA selecionada"""
     ai_tool = AI_TOOLS.get(ai_key)
-
     if not ai_tool:
-        st.error("IA não encontrada.")
+        st.error("Módulo não encontrado.")
         return
 
-    # Header da IA selecionada
+    # Header da Sub-página
     st.markdown(f"""
-    <div style='background: linear-gradient(45deg, #00d4ff, #00ff88); 
-                padding: 1px; border-radius: 15px; margin: 2rem 0;'>
-        <div style='background: #1e1e3f; padding: 2rem; border-radius: 14px;'>
-            <h2 style='color: white; text-align: center; font-family: \'Orbitron\', monospace;'>
-                {ai_tool['icon']} {ai_tool['title']}
-            </h2>
-            <p style='color: #a0a0a0; text-align: center; font-family: \'Rajdhani\', sans-serif;'>
-                {ai_tool['description']}
-            </p>
-            <div style='text-align: center;'>
-                <span style='color: #00ff88;'>● {ai_tool['status']}</span>
-                <span style='color: #a0a0a0; margin-left: 2rem;'>Categoria: {ai_tool['category']}</span>
-            </div>
-        </div>
+    <div style='text-align: center; padding: 4rem 0 2rem 0;'>
+        <div style='font-size: 5rem; margin-bottom: 1rem;'>{ai_tool['icon']}</div>
+        <h1 style='font-family:Orbitron; font-size: 3rem; background: linear-gradient(to right, #fff, #a5a5a5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>
+            {ai_tool['title']}
+        </h1>
+        <p style='color: #00ff88; font-family: Rajdhani; font-size: 1.2rem; letter-spacing: 2px;'>
+            /// MÓDULO {ai_tool['category'].upper()} ATIVADO
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
-    # Exibir links relacionados, se houver
-    if ai_key in AI_LINKS and AI_LINKS[ai_key]:
-        st.markdown("""
-        <div class='links-container'>
-            <h4>Ferramentas Relacionadas</h4>
-        """, unsafe_allow_html=True)
-        for link_item in AI_LINKS[ai_key]:
+    # Lista de Links
+    if ai_key in AI_LINKS:
+        st.markdown("<div class='links-wrapper'>", unsafe_allow_html=True)
+        for link in AI_LINKS[ai_key]:
             st.markdown(f"""
-            <div class='link-item'>
-                <span class='icon'>🔗</span>
-                <a href='{link_item['url']}' target='_blank'>{link_item['name']}</a>
+            <div class='link-card'>
+                <div class='link-info'>
+                    <h4>{link['name']}</h4>
+                    <p>{link['desc']}</p>
+                </div>
+                <a href='{link['url']}' target='_blank' class='visit-btn'>ACESSAR ↗</a>
             </div>
             """, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
     else:
-        st.info(f"Nenhum link relacionado encontrado para {ai_tool['title']}.")
+        st.info("Nenhum link cadastrado para esta categoria ainda.")
 
-    # Botão para voltar ao ecossistema
+    # Botão Voltar
     st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        if st.button("🔙 Voltar ao Ecossistema", type="secondary"):
+    c1, c2, c3 = st.columns([1, 0.5, 1])
+    with c2:
+        if st.button("⏪ RETORNAR AO NEXUS", use_container_width=True):
             st.query_params.clear()
             st.rerun()
 
 def main():
     load_css()
     create_particles()
-
-    # Roteamento baseado em query_params, removendo a necessidade de login
+    
+    # Router Simples
     ai_key = st.query_params.get("ai")
-    if ai_key and ai_key in AI_TOOLS:
+    
+    if ai_key:
         show_ai_links_page(ai_key)
     else:
         show_main_page()
